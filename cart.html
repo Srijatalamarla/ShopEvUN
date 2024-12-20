@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ShopEvUN - Everything U Need</title>
     <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="styles/cart.css">
     <link rel="icon" href="assets/images/e-commerce-logo.png" type="icon/image">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -45,17 +46,33 @@
                     <a href="cart.html">
                         <i class="fa-solid fa-cart-shopping">
                         </i>
-                         <span>Cart</span>
+                        Cart
+                        <span id="cart-count"></span>
                     </a>
                 </li>
             </ul>
         </nav>
     </header>
     <main>
-        Cart
+        <h1 class="cart-page-title">Your Cart</h1>
+        <div class="cart-container">
+            <!-- <div class="cart-item">
+                <img src="" alt=""/>
+                <div class="product-info">
+                    <h2>title</h2>
+                    <p>Price</p>
+                </div>
+                <button>remove from cart</button>
+            </div> -->
+        </div>
+        <dvi class="checkout-btn-div">
+            <button id="checkout-btn">
+                Checkout
+            </button>
+        </dvi>
     </main>
     
     <footer>footer</footer>
-    <script src="scripts.js" defer></script>
+    <script src="scripts.js"></script>
 </body>
 </html>

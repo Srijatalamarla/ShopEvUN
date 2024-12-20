@@ -78,16 +78,88 @@ function displayProducts(products) {
 }
 
 
-document.addEventListener('DOMContentLoaded', loadProducts);
-document.getElementById('load-btn').addEventListener("click", loadProducts);
+document.addEventListener('DOMContentLoaded', () => {
+    if (document.querySelector('.product-container')) {
+        loadProducts();
+
+        document.getElementById('load-btn').addEventListener("click", loadProducts);
+
+        // Attach the event listener to the product container
+        document.querySelector('.product-container').addEventListener('click', (event) => {
+            if (event.target.classList.contains('product-add-to-cart-btn')) { // Check if the clicked element is the Add to Cart button
+                addToCart(event);
+            }
+        });
+
+    }
+
+    if (document.querySelector('.cart-container')) {
+        cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+        updateCartCount();
+        updateCartUI();
+    }
+
+    if (document.getElementById('cart-count')) {
+        updateCartCount();
+    }
+});
 
 
 // add to cart functionality
-// let cart = [];
-// const addToCartBtns = document.querySelectorAll('.product-add-to-cart-btn');
+let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
 
-// addToCartBtns.forEach(addToCartBtn => {
-//     addToCartBtn.addEventListener("click", addToCart);
-// });
+function addToCart(event) {
+    const productId = event.target.dataset.id;
+    const product = cart.find(p => p.id === Number(productId)); //check if product is already in the cart
+
+    if (!product) {
+        fetch(`https://dummyjson.com/products/${productId}`)
+            .then(res => res.json())
+            .then(productData => {
+                cart.push(productData);
+                console.log(cart);
+                saveCartToSession();
+                updateCartCount();
+
+                alert(`${productData.title} has been added to your cart`);
+            });
+    }
+    else {
+        alert("Product already in the cart");
+    }
+}
+
+//update count on cart icon in navbar
+function updateCartCount() {
+    const cartIcon = document.getElementById('cart-count');
+    console.log(cart);
+    cartIcon.textContent = cart.length;
+}
+
+//update cart.html with cart items
+function updateCartUI() {
+    const cartContainer = document.querySelector('.cart-container');
+    console.log(cartContainer);
+    cart.forEach(cartItem => {
+        cartCard = document.createElement('div');
+        cartCard.classList.add('cart-item');
+
+        cartCard.innerHTML = `
+            <img src="${cartItem.thumbnail}" alt="${cartItem.title}"/>
+            <div class="product-info">
+                <h2>${cartItem.title}</h2>
+                <p>Price: $${cartItem.price}</p>
+            </div>      
+            <button data-id="${cartItem.id}">remove from cart</button>
+        `;
+        cartContainer.appendChild(cartCard);
+    });
+}
+
+
+//update sessionStorage whenever there is a update in cart
+function saveCartToSession() {
+    sessionStorage.setItem('cart', JSON.stringify(cart));
+}
 
 //filters- categories on products.html

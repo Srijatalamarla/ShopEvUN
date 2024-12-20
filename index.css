@@ -68,7 +68,7 @@ nav {
 }
 
 /* nav-link --- home, products, cart --  text */
-.nav-link a span {
+.nav-link a {
     color: var(--blue);
     font-size: 1.2rem;
     font-weight: 700;
@@ -92,6 +92,14 @@ nav {
     border: 1px solid white;
     border-radius: 25px;
     margin-left: auto;
+}
+
+#cart-count {
+    margin-left: 1px;
+    background-color: white;
+    color: var(--blue);
+    padding: 5px 10px;
+    border-radius: 30px;
 }
 
 .nav-link:hover {
