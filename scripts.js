@@ -1,3 +1,5 @@
+// responsive navbar
+
 function toggleMenu() {
     const menuBtn = document.querySelector('#menu-icon');
     const closeBtn = document.querySelector('#close');
@@ -21,6 +23,8 @@ function toggleMenu() {
         navBar.classList.remove("active");
     }
 }
+
+// display products on products.html
 
 let skip = 0;
 const limit = 20;
@@ -63,7 +67,7 @@ function displayProducts(products) {
                 <p class="product-rating">
                     Rating: ${product.rating}/5
                 </p>
-                <button class="product-add-to-cart">
+                <button class="product-add-to-cart-btn" data-id="${product.id}">
                     Add to Cart
                 </button>
             </div>
@@ -75,26 +79,15 @@ function displayProducts(products) {
 
 
 document.addEventListener('DOMContentLoaded', loadProducts);
-
-
-
-// fetch('https://dummyjson.com/products?limit=200&skip=0')
-//     .then(res => res.json())
-//     .then(data => {
-//         const products = data.products;
-//         console.log(products);
-
-//         products.forEach(product => {
-//             const productCard = document.createElement('div');
-//             productCard.classList.add('product-card');
-
-//             productCard.innerHTML = `
-//             <h2 class = "product-title">${product.title}</h3>
-//         `;
-
-//             document.querySelector('.product-container').appendChild(productCard);
-//         });
-//     })
-//     .catch(err => console.error('Error fetching data', err));
-
 document.getElementById('load-btn').addEventListener("click", loadProducts);
+
+
+// add to cart functionality
+// let cart = [];
+// const addToCartBtns = document.querySelectorAll('.product-add-to-cart-btn');
+
+// addToCartBtns.forEach(addToCartBtn => {
+//     addToCartBtn.addEventListener("click", addToCart);
+// });
+
+//filters- categories on products.html
