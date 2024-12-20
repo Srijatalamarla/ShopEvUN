@@ -137,8 +137,13 @@ function addToCart(event) {
 //update count on cart icon in navbar
 function updateCartCount() {
     const cartIcon = document.getElementById('cart-count');
-    console.log(cart);
-    cartIcon.textContent = cart.length;
+    if (cart.length > 0) {
+        cartIcon.textContent = cart.length;
+    }
+    else {
+        //cart is empty
+        cartIcon.style.display = 'none';
+    }
 }
 
 //update cart.html with cart items
