@@ -102,6 +102,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('cart-count')) {
         updateCartCount();
     }
+
+    if (document.querySelector('.categories')) {
+        displayCategories();
+    }
+
 });
 
 
@@ -160,6 +165,28 @@ function updateCartUI() {
 //update sessionStorage whenever there is a update in cart
 function saveCartToSession() {
     sessionStorage.setItem('cart', JSON.stringify(cart));
+}
+
+// display categories on index.html - home page
+function displayCategories() {
+    fetch('https://dummyjson.com/products/categories')
+        .then(res => res.json())
+        .then(categoriesData => {
+            console.log(categoriesData);
+            const categoriesContainer = document.querySelector('.categories-container');
+
+            categoriesData.forEach(category => {
+                const categoryItem = document.createElement('div');
+                categoryItem.classList.add('category-item');
+
+                categoryItem.innerHTML = `
+                    <span>${category.name}</span>
+                `;
+
+                categoriesContainer.appendChild(categoryItem);
+            })
+
+        });
 }
 
 //filters- categories on products.html
