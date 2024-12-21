@@ -87,11 +87,15 @@ nav {
 
 .cart {
     color: white;
-    background-color: var(--blue);
+    background-color: rgb(0, 34, 255);
     padding: 15px;
     border: 1px solid white;
     border-radius: 25px;
     margin-left: auto;
+}
+
+.cart:hover {
+    background-color: var(--blue);
 }
 
 #cart-count {
@@ -125,6 +129,7 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
+
 }
 
 .hero-text {
@@ -149,7 +154,7 @@ main {
 
 .hero-text a {
     text-decoration: none;
-    background-color: var(--blue);
+    background-color: rgb(0, 34, 255);
     color: white;
     padding: 20px 30px;
     margin-top: 30px;
@@ -157,10 +162,20 @@ main {
 }
 
 .hero-text a:hover {
-    background-color: rgb(0, 34, 255);
+    background-color: var(--blue);
 }
 
 /* categories */
+.categories {
+    padding: 50px;
+    background-image: linear-gradient(to bottom, rgb(0, 10, 69), rgb(0, 24, 163));
+}
+
+.categories-top-container {
+    padding: 10px 0;
+    border-radius: 40px;
+}
+
 .categories-title {
     text-align: center;
     margin-top: 10px;
@@ -176,17 +191,54 @@ main {
 .categories-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 10px;
+    gap: 15px;
     padding: 10px;
 }
 
 .category-item {
+    cursor: pointer;
     height: 100px;
+    font-size: 1.2rem;
+    padding: 15px;
+    font-weight: 600;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgb(242, 242, 242);
-    border-radius: 20px;
+    background-color: rgb(159, 159, 159, 0.2);
+    color: rgb(225, 225, 225);
+    border-radius: 10px;
+    letter-spacing: 1px;
+    transition: all 0.2s ease-in-out;
+}
+
+.category-item:hover {
+    transform: scale(1.1);
+}
+
+.categories-buttons {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+#see-more-btn {
+    width: 80%;
+    margin-bottom: 50px;
+}
+
+.categories-nav-products {
+    text-decoration: none;
+    padding: 20px 30px;
+    border-radius: 30px;
+    background-color: rgb(0, 34, 255);
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.categories-nav-products:hover {
+    background-color: var(--blue);
 }
 
 /* footer */
@@ -273,5 +325,9 @@ footer {
     .hero-text {
         height: 90%;
         width: 90%;
+    }
+
+    .categories {
+        padding: 15px;
     }
 }
