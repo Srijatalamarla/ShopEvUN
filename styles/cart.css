@@ -27,7 +27,27 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    margin-left: 10px;
+    margin-right: auto;
+    font-size: 0.8rem;
 }
+
+.cart-prod-img {
+    border-right: 1px solid rgb(201, 201, 201);
+}
+
+.cart-prod-remove-btn {
+    cursor: pointer;
+    padding: 20px 40px;
+    font-size: 1.2rem;
+    background-color: transparent;
+    border: none;
+}
+
+/* 
+cart-prod-title
+cart-prod-price
+ */
 
 .checkout-btn-div {
     display: flex;

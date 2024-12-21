@@ -151,6 +151,21 @@ function addToCart(event) {
     }
 }
 
+//remove from cart
+function removeFromCart(event) {
+    // console.log(event.target.closest('button').dataset.id);
+    const productId = event.target.closest('button').dataset.id;
+
+    cart = cart.filter(item => item.id !== Number(productId));
+
+    saveCartToSession();
+
+    updateCartUI();
+    updateCartCount();
+
+    alert('Item removed from cart');
+}
+
 //update count on cart icon in navbar
 function updateCartCount() {
     if (cart.length > 0) {
@@ -165,17 +180,20 @@ function updateCartCount() {
 //update cart.html with cart items
 function updateCartUI() {
     // console.log(cartContainer);
+    cartContainer.innerHTML = ``;
     cart.forEach(cartItem => {
         cartCard = document.createElement('div');
         cartCard.classList.add('cart-item');
 
         cartCard.innerHTML = `
-            <img src="${cartItem.thumbnail}" alt="${cartItem.title}"/>
+            <img src="${cartItem.thumbnail}" alt="${cartItem.title}" class="cart-prod-img"/>
             <div class="product-info">
-                <h2>${cartItem.title}</h2>
-                <p>Price: $${cartItem.price}</p>
+                <h2 class="cart-prod-title">${cartItem.title}</h2>
+                <p class="cart-prod-price">Price: $${cartItem.price}</p>
             </div>      
-            <button data-id="${cartItem.id}">remove from cart</button>
+            <button onclick="removeFromCart(event)" class="cart-prod-remove-btn" data-id="${cartItem.id}">
+                <i class="fa-solid fa-trash"></i>
+            </button>
         `;
         cartContainer.appendChild(cartCard);
     });
