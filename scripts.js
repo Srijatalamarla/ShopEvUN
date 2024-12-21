@@ -24,6 +24,54 @@ function toggleMenu() {
     }
 }
 
+const productContainer = document.querySelector('.product-container');
+const cartContainer = document.querySelector('.cart-container');
+const cartIcon = document.getElementById('cart-count');
+const categoriesSection = document.querySelector('.categories');
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    //if on products.html page
+    if (productContainer) {
+        const category = getQueryParam('category');
+
+        if (category) {
+            fetchProductsByCategory(category);
+        } else {
+            loadProducts(); //loads all products
+        }
+
+        document.getElementById('load-btn').addEventListener("click", loadProducts);
+
+        //Add to cart functionality
+        // Attach the event listener to the product container
+        document.querySelector('.product-container').addEventListener('click', (event) => {
+            if (event.target.classList.contains('product-add-to-cart-btn')) { // Check if the clicked element is the Add to Cart button
+                addToCart(event);
+            }
+        });
+
+    }
+
+    //if on cart.html page
+    if (cartContainer) {
+        cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+        updateCartCount();
+        updateCartUI();
+    }
+
+    //works on all pages - updates cart count
+    if (cartIcon) {
+        updateCartCount();
+    }
+
+    //if on index.html
+    if (categoriesSection) {
+        displayCategories();
+    }
+
+});
+
 // display products on products.html
 
 let skip = 0;
@@ -44,6 +92,7 @@ function loadProducts() {
 }
 
 function displayProducts(products) {
+
     products.forEach(product => {
         const productCard = document.createElement('div');
 
@@ -73,41 +122,9 @@ function displayProducts(products) {
             </div>
         `;
 
-        document.querySelector('.product-container').appendChild(productCard);
+        productContainer.appendChild(productCard);
     });
 }
-
-
-document.addEventListener('DOMContentLoaded', () => {
-    if (document.querySelector('.product-container')) {
-        loadProducts();
-
-        document.getElementById('load-btn').addEventListener("click", loadProducts);
-
-        // Attach the event listener to the product container
-        document.querySelector('.product-container').addEventListener('click', (event) => {
-            if (event.target.classList.contains('product-add-to-cart-btn')) { // Check if the clicked element is the Add to Cart button
-                addToCart(event);
-            }
-        });
-
-    }
-
-    if (document.querySelector('.cart-container')) {
-        cart = JSON.parse(sessionStorage.getItem('cart')) || [];
-        updateCartCount();
-        updateCartUI();
-    }
-
-    if (document.getElementById('cart-count')) {
-        updateCartCount();
-    }
-
-    if (document.querySelector('.categories')) {
-        displayCategories();
-    }
-
-});
 
 
 // add to cart functionality
@@ -122,7 +139,7 @@ function addToCart(event) {
             .then(res => res.json())
             .then(productData => {
                 cart.push(productData);
-                console.log(cart);
+                // console.log(cart);
                 saveCartToSession();
                 updateCartCount();
 
@@ -136,7 +153,6 @@ function addToCart(event) {
 
 //update count on cart icon in navbar
 function updateCartCount() {
-    const cartIcon = document.getElementById('cart-count');
     if (cart.length > 0) {
         cartIcon.textContent = cart.length;
     }
@@ -148,8 +164,7 @@ function updateCartCount() {
 
 //update cart.html with cart items
 function updateCartUI() {
-    const cartContainer = document.querySelector('.cart-container');
-    console.log(cartContainer);
+    // console.log(cartContainer);
     cart.forEach(cartItem => {
         cartCard = document.createElement('div');
         cartCard.classList.add('cart-item');
@@ -174,10 +189,9 @@ function saveCartToSession() {
 
 // display categories on index.html - home page
 function displayCategories() {
-    fetch('https://dummyjson.com/products/categories')
+    fetch('https://dummyjson.com/products/category-list')
         .then(res => res.json())
         .then(categoriesData => {
-            console.log(categoriesData);
             const categoriesContainer = document.querySelector('.categories-container');
 
             categoriesData.forEach(category => {
@@ -185,13 +199,32 @@ function displayCategories() {
                 categoryItem.classList.add('category-item');
 
                 categoryItem.innerHTML = `
-                    <span>${category.name}</span>
+                    <span>${category}</span>
                 `;
+
+                categoryItem.addEventListener('click', () => {
+                    window.location.href = `products.html?category=${category}`;
+                })
 
                 categoriesContainer.appendChild(categoryItem);
             })
 
         });
+}
+
+//redirect to products.html and display products category wise when a category is clicked on home page - index.html
+
+function fetchProductsByCategory(category) {
+    fetch(`https://dummyjson.com/products/category/${category}`)
+        .then(res => res.json())
+        .then(data => {
+            displayProducts(data.products);
+        });
+}
+
+function getQueryParam(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
 }
 
 //filters- categories on products.html
