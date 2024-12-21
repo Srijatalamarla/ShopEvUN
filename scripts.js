@@ -33,6 +33,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //if on products.html page
     if (productContainer) {
+
+        populateCategoryFilterDropDown();
+
         const category = getQueryParam('category');
 
         if (category) {
@@ -67,7 +70,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //if on index.html
     if (categoriesSection) {
-        displayCategories();
+        const categoriesContainer = document.querySelector('.categories-container');
+        displayCategories(categoriesContainer);
     }
 
 });
@@ -206,11 +210,11 @@ function saveCartToSession() {
 }
 
 // display categories on index.html - home page
-function displayCategories() {
+function displayCategories(container) {
     fetch('https://dummyjson.com/products/category-list')
         .then(res => res.json())
         .then(categoriesData => {
-            const categoriesContainer = document.querySelector('.categories-container');
+            // const categoriesContainer = document.querySelector('.categories-container');
 
             categoriesData.forEach(category => {
                 const categoryItem = document.createElement('div');
@@ -222,9 +226,9 @@ function displayCategories() {
 
                 categoryItem.addEventListener('click', () => {
                     window.location.href = `products.html?category=${category}`;
-                })
+                });
 
-                categoriesContainer.appendChild(categoryItem);
+                container.appendChild(categoryItem);
             })
 
         });
@@ -246,3 +250,46 @@ function getQueryParam(param) {
 }
 
 //filters- categories on products.html
+function populateCategoryFilterDropDown() {
+    const categoryDropDown = document.getElementById('prod-category-filter');
+
+    fetch('https://dummyjson.com/products/category-list')
+        .then(res => res.json())
+        .then(categories => {
+
+            //Add 'All' option in beginning
+            const allOption = document.createElement('option');
+            allOption.value = 'all';
+            allOption.textContent = 'All';
+            // allOption.addEventListener('click', () => {
+            //     window.location.href = `products.html`;
+            // });
+
+
+            categoryDropDown.appendChild(allOption);
+
+            //Add each category
+            categories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category;
+                option.textContent = category;
+
+                // option.addEventListener('click', () => {
+                //     window.location.href = `products.html?category=${category}`;
+                // });
+
+                categoryDropDown.appendChild(option);
+            });
+
+            categoryDropDown.addEventListener('change', (event) => {
+                const selectedCategory = event.target.value;
+                if (selectedCategory == 'all') {
+                    window.location.href = `products.html`;
+                }
+                else {
+                    window.location.href = `products.html?category=${selectedCategory}`;
+                }
+            });
+
+        });
+}
