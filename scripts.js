@@ -253,6 +253,19 @@ function getQueryParam(param) {
 function populateCategoryFilterDropDown() {
     const categoryDropDown = document.getElementById('prod-category-filter');
 
+    categoryDropDown.addEventListener('change', (event) => {
+        console.log(event);
+        const selectedCategory = event.target.value;
+        setTimeout(() => {
+            if (selectedCategory === 'all') {
+                window.location.href = `products.html`;
+            }
+            else {
+                window.location.href = `products.html?category=${selectedCategory}`;
+            }
+        }, 500);
+    });
+
     fetch('https://dummyjson.com/products/category-list')
         .then(res => res.json())
         .then(categories => {
@@ -279,16 +292,6 @@ function populateCategoryFilterDropDown() {
                 // });
 
                 categoryDropDown.appendChild(option);
-            });
-
-            categoryDropDown.addEventListener('change', (event) => {
-                const selectedCategory = event.target.value;
-                if (selectedCategory == 'all') {
-                    window.location.href = `products.html`;
-                }
-                else {
-                    window.location.href = `products.html?category=${selectedCategory}`;
-                }
             });
 
         });
