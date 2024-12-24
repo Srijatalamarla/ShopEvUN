@@ -17,8 +17,26 @@
     align-items: center;
     gap: 15px;
     height: 50px;
-    padding: 10px 0;
+    padding: 10px 20px;
     margin: 10px 0;
+}
+
+#prod-category-filter {
+    padding: 10px 15px;
+    font-size: 1rem;
+    border: 2px solid #ccc;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+#prod-category-filter:hover,
+#prod-category-filter:focus {
+    border: 2px solid black;
+    outline: none;
+}
+
+#prod-category-filter option {
+    padding: 10px;
 }
 
 /* product-container */
