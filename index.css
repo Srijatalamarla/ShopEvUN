@@ -173,8 +173,43 @@ main {
 }
 
 .categories-top-container {
+    display: flex;
+    align-items: center;
     padding: 10px 0;
     border-radius: 40px;
+    position: relative;
+}
+
+.scroll-btn {
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 5px;
+    color: white;
+    position: absolute;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 10;
+    border-radius: 10px;
+    height: 40px;
+    width: 40px;
+    transition: all 0.3s ease;
+}
+
+.scroll-btn:hover {
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+.scroll-btn:disabled {
+    display: none;
+    cursor: none;
+}
+
+#prev-btn {
+    left: 5px;
+}
+
+#next-btn {
+    right: 5px;
 }
 
 .categories-title {
@@ -190,30 +225,46 @@ main {
 }
 
 .categories-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 15px;
-    padding: 10px;
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: grey;
+    gap: 10px;
+    padding: 2rem;
+    z-index: 1;
 }
 
 .category-item {
     cursor: pointer;
-    height: 100px;
+    width: 200px;
+    height: 200px;
     font-size: 1.2rem;
     padding: 15px;
     font-weight: 600;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgb(159, 159, 159, 0.2);
+    text-align: center;
+    /* ensures item doesn't shrink */
+    flex: 0 0 auto;
+    background-color: rgb(159, 159, 159, 0.05);
     color: rgb(225, 225, 225);
     border-radius: 10px;
     letter-spacing: 1px;
+    transform: scale(0.8);
     transition: all 0.2s ease-in-out;
 }
 
-.category-item:hover {
-    transform: scale(1.1);
+.category-item.active {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: scale(1);
+    transition: all 0.3s ease;
+}
+
+.category-item.active:hover {
+    transform: scale(1.05);
+    background-color: rgb(159, 159, 159, 0.3);
 }
 
 .categories-buttons {
@@ -221,11 +272,6 @@ main {
     justify-content: center;
     flex-direction: column;
     align-items: center;
-}
-
-#see-more-btn {
-    width: 80%;
-    margin-bottom: 50px;
 }
 
 .categories-nav-products {
@@ -236,6 +282,7 @@ main {
     color: white;
     font-size: 1.2rem;
     font-weight: 700;
+    margin: 20px 0;
 }
 
 .categories-nav-products:hover {
