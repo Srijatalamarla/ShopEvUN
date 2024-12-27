@@ -28,6 +28,11 @@ const productContainer = document.querySelector('.product-container');
 const cartContainer = document.querySelector('.cart-container');
 const cartIcon = document.getElementById('cart-count');
 const categoriesSection = document.querySelector('.categories');
+const categoriesContainer = document.querySelector('.categories-container');
+
+const prevBtn = document.querySelector('.prev-btn');
+const nextBtn = document.querySelector('.next-btn');
+const scrollAmount = 300;
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -72,19 +77,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (categoriesSection) {
 
         // display categories
-        const categoriesContainer = document.querySelector('.categories-container');
         displayCategories(categoriesContainer);
-
-        //categories scroll
-        const prevBtn = document.querySelector('.prev-btn');
-        const nextBtn = document.querySelector('.next-btn');
-        const scrollAmount = 200;
-
-        // Initial update
-        updateScrollButtonVisibility();
 
         categoriesContainer.addEventListener('scroll', updateScrollButtonVisibility);
 
+        //categories scroll
         prevBtn.addEventListener('click', () => {
             stopAutoScroll();
             categoriesContainer.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
@@ -97,57 +94,9 @@ document.addEventListener('DOMContentLoaded', () => {
             updateScrollButtonVisibility();
         });
 
-        function updateScrollButtonVisibility() {
-            prevBtn.disabled = categoriesContainer.scrollLeft === 0;
-            nextBtn.disabled = categoriesContainer.scrollLeft + categoriesContainer.clientWidth >= categoriesContainer.scrollWidth;
-        }
-
-        //auto scroll
-        const autoScrollInterval = 5000;
-        let autoScroll;
-
-        function startAutoScroll() {
-            autoScroll = setInterval(() => {
-                if (categoriesContainer.scrollLeft + categoriesContainer.clientWidth >= categoriesContainer.scrollWidth) {
-                    categoriesContainer.scrollBy({ left: 0, behavior: 'smooth' });
-                }
-                else {
-                    categoriesContainer.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-                }
-            }, autoScrollInterval);
-        }
-
-        function stopAutoScroll() {
-            clearInterval(autoScroll);
-        }
-
-        //start when page loads
-        startAutoScroll();
-
         categoriesContainer.addEventListener('mouseenter', stopAutoScroll);
         categoriesContainer.addEventListener('mouseleave', startAutoScroll);
 
-        function highlightCategory() {
-            const categories = document.querySelectorAll('.category-item');
-
-            const scrollLeft = categoriesContainer.scrollLeft;
-            const containerWidth = categoriesContainer.clientWidth;
-
-            categories.forEach(category => {
-                const categoryStart = category.offsetLeft;
-                const categoryEnd = categoryStart + category.offsetWidth;
-
-                if (scrollLeft <= categoryStart && scrollLeft + containerWidth >= categoryEnd) {
-                    category.classList.add('active');
-                }
-                else {
-                    category.classList.remove('active');
-                }
-            });
-        }
-
-        //Initial highlight
-        highlightCategory();
 
         categoriesContainer.addEventListener('scroll', highlightCategory);
     }
@@ -307,7 +256,15 @@ function displayCategories(container) {
                 });
 
                 container.appendChild(categoryItem);
-            })
+            });
+
+            // Initial update
+            updateScrollButtonVisibility();
+            //Initial highlight
+            highlightCategory();
+
+            //start when page loads
+            startAutoScroll();
 
         });
 }
@@ -369,4 +326,47 @@ function populateCategoryFilterDropDown() {
             });
 
         });
+}
+
+function updateScrollButtonVisibility() {
+    prevBtn.disabled = categoriesContainer.scrollLeft === 0;
+    nextBtn.disabled = categoriesContainer.scrollLeft + categoriesContainer.clientWidth >= categoriesContainer.scrollWidth;
+}
+
+function highlightCategory() {
+    const categories = document.querySelectorAll('.category-item');
+
+    const scrollLeft = categoriesContainer.scrollLeft;
+    const containerWidth = categoriesContainer.clientWidth;
+
+    categories.forEach(category => {
+        const categoryStart = category.offsetLeft;
+        const categoryEnd = categoryStart + category.offsetWidth;
+
+        if (scrollLeft <= categoryStart && scrollLeft + containerWidth >= categoryEnd) {
+            category.classList.add('active');
+        }
+        else {
+            category.classList.remove('active');
+        }
+    });
+}
+
+//auto scroll
+const autoScrollInterval = 5000;
+let autoScroll;
+
+function startAutoScroll() {
+    autoScroll = setInterval(() => {
+        if (categoriesContainer.scrollLeft + categoriesContainer.clientWidth >= categoriesContainer.scrollWidth) {
+            categoriesContainer.scrollBy({ left: 0, behavior: 'smooth' });
+        }
+        else {
+            categoriesContainer.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        }
+    }, autoScrollInterval);
+}
+
+function stopAutoScroll() {
+    clearInterval(autoScroll);
 }
