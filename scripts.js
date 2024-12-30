@@ -34,6 +34,9 @@ const prevBtn = document.querySelector('.prev-btn');
 const nextBtn = document.querySelector('.next-btn');
 const scrollAmount = 300;
 
+const modal = document.getElementById('productModal');
+const closeModalBtn = document.querySelector('.close-modal');
+
 document.addEventListener('DOMContentLoaded', () => {
 
     //if on products.html page
@@ -58,6 +61,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 addToCart(event);
             }
         });
+
+        closeModalBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        window.onclick = (event) => {
+            if (event.target === modal)
+                modal.style.display = 'none';
+        }
 
     }
 
@@ -125,6 +137,7 @@ function loadProducts() {
 function displayProducts(products) {
 
     products.forEach(product => {
+        // console.log(product);
         const productCard = document.createElement('div');
 
         productCard.classList.add('product-card');
@@ -135,28 +148,80 @@ function displayProducts(products) {
                 <h2 class="product-title">
                     ${product.title}
                 </h2>
-                <p class="product-description">
-                    ${product.description}
-                </p>
                 <p class="product-price">
                     Price: $${product.price}
                 </p>
-                <p class="product-stock">
-                    Stock: ${product.stock}
-                </p>
-                <p class="product-rating">
-                    Rating: ${product.rating}/5
-                </p>
-                <button class="product-add-to-cart-btn" data-id="${product.id}">
-                    Add to Cart
-                </button>
+                <div class="product-status">
+                    <span class="stock-status">${product.availabilityStatus}</span>
+                    <span class="rating">★ ${product.rating}</span>
+                </div>
+                <div class="product-actions">
+                    <button class="product-add-to-cart-btn" data-id="${product.id}">Add to Cart</button>
+                    <button class="product-view-details-btn" onclick="showProductDetails(${product.id})">View Details</button>
+                </div>
             </div>
         `;
+
+        productCard.addEventListener("click", () => {
+            showProductDetails(product.id);
+        });
 
         productContainer.appendChild(productCard);
     });
 }
 
+function showProductDetails(productId) {
+    fetch(`https://dummyjson.com/products/${productId}`)
+        .then(res => res.json())
+        .then(product => {
+
+            const modalBody = document.querySelector('.modal-body');
+
+            modalBody.innerHTML = `
+                <div class="modal-product-details">
+                    <div class="product-gallery">
+                        <img src="${product.images[0]}" alt="${product.title}" class="modal-product-image"/>
+                    </div>
+                    
+                    <div class="product-info-main">
+                        <h2>${product.title}</h2>
+                        <p class="brand">by ${product.brand}</p>
+                        <div class="price-section">
+                            <p class="price">$${product.price}</p>
+                            <span class="discount">${product.discountPercentage}% OFF</span>
+                        </div>
+                        
+                        <div class="product-meta">
+                            <p class="rating">Rating: ★ ${product.rating}</p>
+                            <p class="stock">Stock: ${product.stock} units</p>
+                        </div>
+                        
+                        <p class="description">${product.description}</p>
+                        
+                        <div class="purchase-info">
+                            <p>Minimum Order: ${product.minimumOrderQuantity} units</p>
+                            <p>${product.shippingInformation}</p>
+                            <p>${product.returnPolicy}</p>
+                            <p>${product.warrantyInformation}</p>
+                        </div>
+                        
+                        <div class="specifications">
+                            <h3>Specifications</h3>
+                            <p>Dimensions: ${product.dimensions.width}W x ${product.dimensions.height}H x ${product.dimensions.depth}D cm</p>
+                            <p>Weight: ${product.weight}kg</p>
+                        </div>
+                        
+                        <div class="tags">
+                            ${product.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        </div>
+                        
+                        <button class="product-add-to-cart-btn" data-id="${product.id}">Add to Cart</button>
+                    </div>
+                </div>
+            `;
+            modal.style.display = 'block';
+        });
+}
 
 // add to cart functionality
 let cart = JSON.parse(sessionStorage.getItem('cart')) || [];

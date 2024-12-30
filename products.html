@@ -65,16 +65,74 @@
                 </select>
             </div>
         </div>
-        <div class="product-container"></div>
-        <!-- <div class="product-card">
-            <img src="" alt="" class="product-thumbnail">
-            <h2 class="product-title">title</h2>
-            <p class="product-description">description</p>
-            <p class="product-price">price</p>
-            <p class="product-stock">stock</p>
-            <p class="product-rating">rating</p>
-            <button class="product-add-to-cart">add to cart</button>
-        </div> -->
+        <div class="product-container">
+
+            <!-- <img src="${product.thumbnail}" alt="${product.title}" class="product-thumbnail"/>
+            <div class="product-content">
+                <h2 class="product-title">
+                    ${product.title}
+                </h2>
+                <p class="product-price">
+                    Price: $${product.price}
+                </p>
+                <div class="product-status">
+                    <span class="stock-status">${product.availabilityStatus}</span>
+                    <span class="rating">★ ${product.rating}</span>
+                </div>
+                <div class="product-actions">
+                    <button class="product-add-to-cart-btn" data-id="${product.id}">Add to Cart</button>
+                    <button class="product-view-details-btn" onclick="showProductDetails(${product.id})">View Details</button>
+                </div>
+            </div> -->
+
+            <div id="productModal" class="productModal">
+                <div class="modal-content">
+                    <button class="close-modal"><span>&times;</span></button>
+                    <div class="modal-body">
+                        <!-- <div class="modal-product-details">
+                    <div class="product-gallery">
+                        <img src="${product.images[0]}" alt="${product.title}" class="modal-product-image"/>
+                    </div>
+                    
+                    <div class="product-info-main">
+                        <h2>${product.title}</h2>
+                        <p class="brand">by ${product.brand}</p>
+                        <div class="price-section">
+                            <p class="price">$${product.price}</p>
+                            <span class="discount">${product.discountPercentage}% OFF</span>
+                        </div>
+                        
+                        <div class="product-meta">
+                            <p class="rating">Rating: ★ ${product.rating}</p>
+                            <p class="stock">Stock: ${product.stock} units</p>
+                        </div>
+                        
+                        <p class="description">${product.description}</p>
+                        
+                        <div class="purchase-info">
+                            <p>Minimum Order: ${product.minimumOrderQuantity} units</p>
+                            <p>${product.shippingInformation}</p>
+                            <p>${product.returnPolicy}</p>
+                            <p>${product.warrantyInformation}</p>
+                        </div>
+                        
+                        <div class="specifications">
+                            <h3>Specifications</h3>
+                            <p>Dimensions: ${product.dimensions.width}W x ${product.dimensions.height}H x ${product.dimensions.depth}D cm</p>
+                            <p>Weight: ${product.weight}kg</p>
+                        </div>
+                        
+                        <div class="tags">
+                            ${product.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        </div>
+                        
+                        <button class="product-add-to-cart-btn" data-id="${product.id}">Add to Cart</button>
+                    </div>
+                </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="load-more-div">
             <button id="load-btn">
                 Load More
@@ -111,6 +169,7 @@
             <p>&copy 2024 ShopEvuN. All rights reserved.</p>
         </section>
     </footer>
+
     <script src="scripts.js" defer></script>
 </body>
 </html>
