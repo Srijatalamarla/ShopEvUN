@@ -184,11 +184,11 @@ function showProductDetails(productId) {
                     </div>
                     
                     <div class="product-info-main">
-                        <h2>${product.title}</h2>
+                        <h3>${product.title}</h3>
                         <p class="brand">by ${product.brand}</p>
                         <div class="price-section">
-                            <p class="price">$${product.price}</p>
-                            <span class="discount">${product.discountPercentage}% OFF</span>
+                            <p class="price">Price: $${product.price}</p>
+                            <span class="discount">Discount: ${product.discountPercentage}% OFF</span>
                         </div>
                         
                         <div class="product-meta">
