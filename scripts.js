@@ -157,7 +157,7 @@ function displayProducts(products) {
                 </div>
                 <div class="product-actions">
                     <button class="product-add-to-cart-btn" data-id="${product.id}">Add to Cart</button>
-                    <button class="product-view-details-btn" onclick="showProductDetails(${product.id})">View Details</button>
+                    <button class="product-view-details-btn">View Details</button>
                 </div>
             </div>
         `;
@@ -165,6 +165,12 @@ function displayProducts(products) {
         productCard.addEventListener("click", () => {
             showProductDetails(product.id);
         });
+
+        const viewDetailsBtn = productCard.querySelector('.product-view-details-btn');
+        viewDetailsBtn.addEventListener('click', (event) => {
+            event.stopPropagation();
+            showProductDetails(product.id);
+        })
 
         productContainer.appendChild(productCard);
     });
@@ -174,6 +180,8 @@ function showProductDetails(productId) {
     fetch(`https://dummyjson.com/products/${productId}`)
         .then(res => res.json())
         .then(product => {
+
+            console.log(product);
 
             const modalBody = document.querySelector('.modal-body');
 
