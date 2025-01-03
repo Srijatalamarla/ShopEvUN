@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ShopEvUN - Everything U Need</title>
     <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="styles/products.css">
     <link rel="icon" href="assets/images/e-commerce-logo.png" type="icon/image">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -59,7 +60,12 @@
                 <a href="products.html">Click here to shop now</a>
             </div>
         </section>
-        <section>featured products -- coming sooon......</section>
+        <section class="featured-products-section" id="featured-products-section">
+            <h2 class="featured-products-title">Featured Products</h2>
+            <div class="featured-products-container">
+
+            </div>
+        </section>
         <section class="categories">
             <h2 class="categories-title">Categories</h2>
             <div class="categories-top-container">
@@ -107,6 +113,58 @@
             <p>&copy 2024 ShopEvuN. All rights reserved.</p>
         </section>
     </footer>
+
+    <div id="productModal" class="productModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Product Details</h2>
+                <button class="close-modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <!-- <div class="modal-product-details">
+            <div class="product-gallery">
+                <img src="${product.images[0]}" alt="${product.title}" class="modal-product-image"/>
+            </div>
+            
+            <div class="product-info-main">
+                <h2>${product.title}</h2>
+                <p class="brand">by ${product.brand}</p>
+                <div class="price-section">
+                    <p class="price">$${product.price}</p>
+                    <span class="discount">${product.discountPercentage}% OFF</span>
+                </div>
+                
+                <div class="product-meta">
+                    <p class="rating">Rating: ★ ${product.rating}</p>
+                    <p class="stock">Stock: ${product.stock} units</p>
+                </div>
+                
+                <p class="description">${product.description}</p>
+                
+                <div class="purchase-info">
+                    <p>Minimum Order: ${product.minimumOrderQuantity} units</p>
+                    <p>${product.shippingInformation}</p>
+                    <p>${product.returnPolicy}</p>
+                    <p>${product.warrantyInformation}</p>
+                </div>
+                
+                <div class="specifications">
+                    <h3>Specifications</h3>
+                    <p>Dimensions: ${product.dimensions.width}W x ${product.dimensions.height}H x ${product.dimensions.depth}D cm</p>
+                    <p>Weight: ${product.weight}kg</p>
+                </div>
+                
+                <div class="tags">
+                    ${product.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                </div>
+                
+                <button class="product-add-to-cart-btn" data-id="${product.id}">Add to Cart</button>
+            </div>
+        </div> -->
+            </div>
+        </div>
+    </div>
+
     <script src="scripts.js" defer></script>
 </body>
 </html>

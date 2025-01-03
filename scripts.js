@@ -37,6 +37,8 @@ const scrollAmount = 300;
 const modal = document.getElementById('productModal');
 const closeModalBtn = document.querySelector('.close-modal');
 
+const featuredProductsContainer = document.querySelector('.featured-products-container');
+
 document.addEventListener('DOMContentLoaded', () => {
 
     //if on products.html page
@@ -61,15 +63,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 addToCart(event);
             }
         });
-
-        closeModalBtn.addEventListener('click', () => {
-            modal.style.display = 'none';
-        });
-
-        window.onclick = (event) => {
-            if (event.target === modal)
-                modal.style.display = 'none';
-        }
 
     }
 
@@ -111,6 +104,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
         categoriesContainer.addEventListener('scroll', highlightCategory);
+    }
+
+    //featured products on index.html
+    if (featuredProductsContainer) {
+        displayFeaturedProducts();
+    }
+
+    //if product modal is on screen
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        window.onclick = (event) => {
+            if (event.target === modal)
+                modal.style.display = 'none';
+        }
     }
 
 });
@@ -156,7 +166,7 @@ function displayProducts(products) {
                     <span class="rating">★ ${product.rating}</span>
                 </div>
                 <div class="product-actions">
-                    <button class="product-add-to-cart-btn" data-id="${product.id}">Add to Cart</button>
+                    <button class="product-add-to-cart-btn">Add to Cart</button>
                     <button class="product-view-details-btn">View Details</button>
                 </div>
             </div>
@@ -166,11 +176,17 @@ function displayProducts(products) {
             showProductDetails(product.id);
         });
 
+        const addToCartBtn = productCard.querySelector('.product-add-to-cart-btn');
+        addToCartBtn.addEventListener('click', (event) => {
+            event.stopPropagation();
+            addToCart(product.id);
+        });
+
         const viewDetailsBtn = productCard.querySelector('.product-view-details-btn');
         viewDetailsBtn.addEventListener('click', (event) => {
             event.stopPropagation();
             showProductDetails(product.id);
-        })
+        });
 
         productContainer.appendChild(productCard);
     });
@@ -223,10 +239,16 @@ function showProductDetails(productId) {
                             ${product.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
                         </div>
                         
-                        <button class="product-add-to-cart-btn" data-id="${product.id}">Add to Cart</button>
+                        <button class="product-add-to-cart-btn">Add to Cart</button>
                     </div>
                 </div>
             `;
+
+            const addToCartBtn = modalBody.querySelector('.product-add-to-cart-btn');
+            addToCartBtn.addEventListener('click', () => {
+                event.stopPropagation();
+                addToCart(product.id);
+            });
             modal.style.display = 'block';
         });
 }
@@ -234,8 +256,7 @@ function showProductDetails(productId) {
 // add to cart functionality
 let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
 
-function addToCart(event) {
-    const productId = event.target.dataset.id;
+function addToCart(productId) {
     const product = cart.find(p => p.id === Number(productId)); //check if product is already in the cart
 
     if (!product) {
@@ -442,4 +463,39 @@ function startAutoScroll() {
 
 function stopAutoScroll() {
     clearInterval(autoScroll);
+}
+
+//featured products
+function displayFeaturedProducts() {
+    fetch('https://dummyjson.com/products')
+        .then(res => res.json())
+        .then(data => {
+
+            const products = data.products;
+            const featuredProducts = products.filter(product => product.rating > 4.5);
+
+            console.log(featuredProducts);
+
+            featuredProducts.forEach(featuredProduct => {
+
+                const productCard = document.createElement('div');
+
+                productCard.classList.add('featured-product-card');
+
+                productCard.innerHTML = `
+                    <img src="${featuredProduct.thumbnail}" alt="${featuredProduct.title}" class="featured-product-thumbnail"/>
+                    <div class="featured-product-content">
+                        <h2 class="featured-product-title">
+                            ${featuredProduct.title}
+                        </h2>
+                    </div>
+                `;
+
+                productCard.addEventListener("click", () => {
+                    showProductDetails(featuredProduct.id);
+                });
+
+                featuredProductsContainer.appendChild(productCard);
+            });
+        });
 }
