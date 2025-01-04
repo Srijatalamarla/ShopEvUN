@@ -306,6 +306,28 @@ function updateCartCount() {
 function updateCartUI() {
     // console.log(cartContainer);
     cartContainer.innerHTML = ``;
+    if (cart.length === 0) {
+        cartContainer.innerHTML = `
+            <div class="empty-cart-content">
+                <div>
+                    <i class="fa-solid fa-cart-shopping"></i>
+                </div>
+                <p>
+                    Cart is empty
+                </p>
+                <p>
+                    Start adding some products!
+                </p>
+                <button>
+                    <a href="products.html" class="cart-nav-products">
+                        Explore Products <span>&raquo;</span>
+                    </a>
+                </button>
+            </div>
+        `;
+
+        document.querySelector('#checkout-btn').style.display = 'none';
+    }
     cart.forEach(cartItem => {
         cartCard = document.createElement('div');
         cartCard.classList.add('cart-item');
