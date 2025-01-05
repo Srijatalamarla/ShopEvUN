@@ -65,7 +65,7 @@ nav {
 }
 
 .nav-link {
-    transition: all 0.3s ease-in-out;
+    transition: all 0.2s ease-in-out;
 }
 
 /* nav-link --- home, products, cart --  text */
@@ -88,15 +88,15 @@ nav {
 
 .cart {
     color: white;
-    background-color: rgb(0, 34, 255);
-    padding: 15px;
+    background-color: rgb(0, 24, 255);
+    padding: 12px 14px;
     border: 1px solid white;
     border-radius: 25px;
     margin-left: auto;
 }
 
 .cart:hover {
-    background-color: var(--blue);
+    background-color: rgb(0, 34, 163);
 }
 
 #cart-count {
@@ -108,7 +108,7 @@ nav {
 }
 
 .nav-link:hover {
-    transform: translateX(10px);
+    transform: scale(1.1);
 }
 
 /* buttons - disabled */
@@ -532,7 +532,16 @@ footer {
 
     .nav-links .cart {
         margin-top: 25px;
-        margin-left: 0;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .nav-link:hover {
+        transform: translateX(10px);
+    }
+
+    .cart:hover {
+        transform: scale(1.01);
     }
 
     .hero {
