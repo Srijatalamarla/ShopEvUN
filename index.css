@@ -108,7 +108,7 @@ nav {
 }
 
 .nav-link:hover {
-    transform: scale(1.05);
+    transform: translateX(10px);
 }
 
 /* buttons - disabled */
@@ -518,7 +518,7 @@ footer {
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
-        align-items: center;
+        align-items: flex-start;
         gap: 10px;
         position: fixed;
         top: 0;

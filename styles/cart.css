@@ -104,11 +104,14 @@ cart-prod-title
 cart-prod-price
  */
 
-.checkout-btn-div {
+.checkout-div {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 60px;
+    gap: 10px;
+    margin: 10px;
+    padding: 10px;
 }
 
 #checkout-btn {
@@ -117,12 +120,13 @@ cart-prod-price
     background-color: transparent;
     font-size: 1.2rem;
     padding: 10px 20px;
-    box-shadow: 0 2px 2px 2px rgb(180, 180, 180);
+    box-shadow: 0px 5px 5px rgb(180, 180, 180);
     transition: all 0.2s ease-in-out;
 }
 
 #checkout-btn:hover {
-    transform: scale(1.1);
+    font-weight: 500;
+    transform: scale(1.05);
 }
 
 @media (max-width: 768px) {

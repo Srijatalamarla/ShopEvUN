@@ -318,24 +318,35 @@ function updateCartUI() {
             </div>
         `;
 
-        document.querySelector('#checkout-btn').style.display = 'none';
+        document.querySelector('.checkout-div').style.display = 'none';
     }
-    cart.forEach(cartItem => {
-        cartCard = document.createElement('div');
-        cartCard.classList.add('cart-item');
+    else {
+        let totalPrice = 0;
+        cart.forEach(cartItem => {
 
-        cartCard.innerHTML = `
-            <img src="${cartItem.thumbnail}" alt="${cartItem.title}" class="cart-prod-img"/>
-            <div class="product-info">
-                <h2 class="cart-prod-title">${cartItem.title}</h2>
-                <p class="cart-prod-price">Price: $${cartItem.price}</p>
-            </div>      
-            <button onclick="removeFromCart(event)" class="cart-prod-remove-btn" data-id="${cartItem.id}">
-                <i class="fa-solid fa-trash"></i>
-            </button>
-        `;
-        cartContainer.appendChild(cartCard);
-    });
+            cartCard = document.createElement('div');
+            cartCard.classList.add('cart-item');
+
+            cartCard.innerHTML = `
+                <img src="${cartItem.thumbnail}" alt="${cartItem.title}" class="cart-prod-img"/>
+                <div class="product-info">
+                    <h2 class="cart-prod-title">${cartItem.title}</h2>
+                    <p class="cart-prod-price">Price: $${cartItem.price}</p>
+                </div>      
+                <button onclick="removeFromCart(event)" class="cart-prod-remove-btn" data-id="${cartItem.id}">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            `;
+            totalPrice += cartItem.price;
+            cartContainer.appendChild(cartCard);
+        });
+
+        const totalPriceElem = document.querySelector('.total-price');
+        const noOfItemsElem = document.querySelector('.no-of-items');
+
+        totalPriceElem.textContent = Math.round(totalPrice);
+        noOfItemsElem.textContent = cart.length;
+    }
 }
 
 
