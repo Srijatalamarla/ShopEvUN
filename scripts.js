@@ -56,14 +56,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.getElementById('load-btn').addEventListener("click", loadProducts);
 
-        //Add to cart functionality
-        // Attach the event listener to the product container
-        document.querySelector('.product-container').addEventListener('click', (event) => {
-            if (event.target.classList.contains('product-add-to-cart-btn')) { // Check if the clicked element is the Add to Cart button
-                addToCart(event);
-            }
-        });
-
     }
 
     //if on cart.html page
