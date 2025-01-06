@@ -85,18 +85,19 @@
                 </ul>
             </section>
             <section>
-                <p class="footer-section-title">Queries</p>
-                <form action="" class="footer-queries-form">
+                <p class="footer-section-title">Have a Query? Let Us Know!</p>
+                <form action="" class="footer-queries-form" id="footer-queries-form">
                     <label for="query-title">Query</label>
-                    <input id="query-title" name="query-title" type="text" placeholder="Enter your query here..">
+                    <input id="query-title" name="query-title" type="text" placeholder="Enter your query here.." required>
                     <br>
 
                     <label for="query-desc">Describe Your Query:</label>
-                    <textarea id="query-desc" name="query-desc" type="text" placeholder="Provide details here...."></textarea>
+                    <textarea id="query-desc" name="query-desc" type="text" placeholder="Provide details here...." required></textarea>
                     <br>
 
                     <button type="submit">Submit</button>
                 </form>
+                <p id="query-message"></p>
             </section>
         </div>
         <section class="footer-copyright">

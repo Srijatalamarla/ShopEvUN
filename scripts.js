@@ -524,3 +524,23 @@ function displayFeaturedProducts() {
             });
         });
 }
+
+document.getElementById('footer-queries-form').addEventListener('submit', (event) => {
+    event.preventDefault(); // prevents default form submission
+
+    const queryTitle = document.querySelector('#query-title').value.trim();
+    const queryDesc = document.querySelector('#query-desc').value.trim();
+    const queryMsgElem = document.querySelector('#query-message');
+
+    if (queryTitle === '' || queryDesc === '') {
+        queryMsgElem.textContent = "Please fill out both the query title and description!";
+        queryMsgElem.style.color = 'red';
+        return;
+    }
+
+    queryMsgElem.textContent = "Thank you for reaching out! we'll get back to you soon.";
+    queryMsgElem.style.color = 'green';
+
+    document.querySelector('#query-title').value = '';
+    document.querySelector('#query-desc').value = '';
+});
