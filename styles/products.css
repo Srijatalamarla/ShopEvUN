@@ -232,6 +232,7 @@
 }
 
 #load-btn {
+    display: none;
     cursor: pointer;
     border: none;
     background-color: transparent;

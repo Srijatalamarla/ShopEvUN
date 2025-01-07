@@ -239,6 +239,7 @@ main {
 
 /* categories */
 .categories {
+    display: none;
     padding: 50px;
     background-image: linear-gradient(to bottom, rgb(0, 10, 69), rgb(0, 24, 163));
 }
@@ -562,4 +563,16 @@ footer {
     .footer-content {
         justify-content: flex-start;
     }
+}
+
+.no-products-available {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.no-products-available p {
+    font-size: 1.5rem;
+    font-weight: 500;
 }

@@ -38,6 +38,8 @@ const modal = document.getElementById('productModal');
 const closeModalBtn = document.querySelector('.close-modal');
 
 const featuredProductsContainer = document.querySelector('.featured-products-container');
+const noProductDiv = document.querySelector('.no-products-available');
+const loadBtn = document.querySelector('#load-btn');
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -54,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
             loadProducts(); //loads all products
         }
 
-        document.getElementById('load-btn').addEventListener("click", loadProducts);
+        loadBtn.addEventListener("click", loadProducts);
 
     }
 
@@ -131,6 +133,8 @@ function loadProducts() {
                 //no more products
                 window.alert("no more products avaailable");
             }
+            noProductDiv.style.display = 'none';
+            loadBtn.style.display = 'block';
             displayProducts(data.products);
             skip += limit;
         });
@@ -362,6 +366,7 @@ function displayCategories(container) {
         .then(categoriesData => {
             // const categoriesContainer = document.querySelector('.categories-container');
 
+            document.querySelector('.categories').style.display = 'block'; //categories content only displays when it is fetched
             categoriesData.forEach(category => {
                 const categoryItem = document.createElement('div');
                 categoryItem.classList.add('category-item');
@@ -394,6 +399,8 @@ function fetchProductsByCategory(category) {
     fetch(`https://dummyjson.com/products/category/${category}`)
         .then(res => res.json())
         .then(data => {
+            noProductDiv.style.display = 'none';
+            loadBtn.style.display = 'block';
             displayProducts(data.products);
         });
 }
@@ -496,10 +503,10 @@ function displayFeaturedProducts() {
         .then(res => res.json())
         .then(data => {
 
+            noProductDiv.style.display = 'none';
+
             const products = data.products;
             const featuredProducts = products.filter(product => product.rating > 4.5);
-
-            console.log(featuredProducts);
 
             featuredProducts.forEach(featuredProduct => {
 
