@@ -148,6 +148,8 @@ function displayProducts(products) {
 
         productCard.classList.add('product-card');
 
+        const starsHTML = generateRatingStars(product.rating);
+
         productCard.innerHTML = `
             <img src="${product.thumbnail}" alt="${product.title}" class="product-thumbnail"/>
             <div class="product-content">
@@ -159,7 +161,7 @@ function displayProducts(products) {
                 </p>
                 <div class="product-status">
                     <span class="stock-status">${product.availabilityStatus}</span>
-                    <span class="rating">★ ${product.rating}</span>
+                    <span class="rating">${starsHTML} (${product.rating})</span>
                 </div>
                 <div class="product-actions">
                     <button class="product-add-to-cart-btn">Add to Cart</button>
@@ -193,7 +195,7 @@ function showProductDetails(productId) {
         .then(res => res.json())
         .then(product => {
 
-            console.log(product);
+            const starsHTML = generateRatingStars(product.rating);
 
             const modalBody = document.querySelector('.modal-body');
 
@@ -212,7 +214,7 @@ function showProductDetails(productId) {
                         </div>
                         
                         <div class="product-meta">
-                            <p class="rating">Rating: ★ ${product.rating}</p>
+                            <span class="rating">${starsHTML} (${product.rating})</span>
                             <p class="stock">Stock: ${product.stock} units</p>
                         </div>
                         
@@ -248,6 +250,62 @@ function showProductDetails(productId) {
             modal.style.display = 'block';
         });
 }
+
+//generate rating stars - visually 
+function generateRatingStars(rating) {
+    const fullStars = Math.floor(rating);
+    const fraction = rating - fullStars;
+    let starsHTML = "";
+
+    // Helper function to create a unique ID for each gradient
+    const uniqueId = `star-gradient-${Math.random().toString(36).substr(2, 9)}`;
+
+    // Generate full stars
+    for (let i = 0; i < fullStars; i++) {
+        starsHTML += `
+            <span class="star">
+                <svg viewBox="0 0 24 24" width="20" height="20">
+                    <path fill="gold" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+            </span>
+        `;
+    }
+
+    // Generate fractional star if needed
+    if (fraction > 0) {
+        const percent = Math.round(fraction * 100);
+        starsHTML += `
+            <span class="star">
+                <svg viewBox="0 0 24 24" width="20" height="20">
+                    <defs>
+                        <linearGradient id="${uniqueId}">
+                            <stop offset="0%" stop-color="gold"/>
+                            <stop offset="${percent}%" stop-color="gold"/>
+                            <stop offset="${percent}%" stop-color="lightgray"/>
+                            <stop offset="100%" stop-color="lightgray"/>
+                        </linearGradient>
+                    </defs>
+                    <path fill="url(#${uniqueId})" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+            </span>
+        `;
+    }
+
+    // Generate empty stars
+    const emptyStars = 5 - fullStars - (fraction > 0 ? 1 : 0);
+    for (let i = 0; i < emptyStars; i++) {
+        starsHTML += `
+            <span class="star">
+                <svg viewBox="0 0 24 24" width="20" height="20">
+                    <path fill="lightgray" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+            </span>
+        `;
+    }
+
+    return starsHTML;
+}
+
 
 // add to cart functionality
 let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
