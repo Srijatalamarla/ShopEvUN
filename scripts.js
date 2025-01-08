@@ -197,6 +197,8 @@ function showProductDetails(productId) {
 
             const starsHTML = generateRatingStars(product.rating);
 
+            const isNotBrand = (product.brand === undefined);
+
             const modalBody = document.querySelector('.modal-body');
 
             modalBody.innerHTML = `
@@ -206,8 +208,10 @@ function showProductDetails(productId) {
                     </div>
                     
                     <div class="product-info-main">
-                        <h3>${product.title}</h3>
-                        <p class="brand">by ${product.brand}</p>
+                        <div class="product-header-section">
+                            <h3>${product.title}</h3>
+                            ${isNotBrand ? '' : `<span class="brand">by ${product.brand}</span>`}
+                        </div>
                         <div class="price-section">
                             <p class="price">Price: $${product.price}</p>
                             <span class="discount">Discount: ${product.discountPercentage}% OFF</span>
@@ -221,6 +225,7 @@ function showProductDetails(productId) {
                         <p class="description">${product.description}</p>
                         
                         <div class="purchase-info">
+                            <h3>Order Information</h3>
                             <p>Minimum Order: ${product.minimumOrderQuantity} units</p>
                             <p>${product.shippingInformation}</p>
                             <p>${product.returnPolicy}</p>
@@ -231,10 +236,6 @@ function showProductDetails(productId) {
                             <h3>Specifications</h3>
                             <p>Dimensions: ${product.dimensions.width}W x ${product.dimensions.height}H x ${product.dimensions.depth}D cm</p>
                             <p>Weight: ${product.weight}kg</p>
-                        </div>
-                        
-                        <div class="tags">
-                            ${product.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
                         </div>
                         
                         <button class="product-add-to-cart-btn">Add to Cart</button>
