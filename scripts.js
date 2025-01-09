@@ -140,6 +140,17 @@ function loadProducts() {
         });
 }
 
+function getStockStatus(stock) {
+    if (stock === 0) {
+        return { stockStatusClass: 'out-of-stock', stockText: 'Out of Stock' };
+    } else if (stock <= 5) {
+        return { stockStatusClass: 'low-stock', stockText: 'Low Stock' };
+    } else {
+        return { stockStatusClass: 'in-stock', stockText: 'In Stock' };
+    }
+}
+
+
 function displayProducts(products) {
 
     products.forEach(product => {
@@ -150,7 +161,18 @@ function displayProducts(products) {
 
         const starsHTML = generateRatingStars(product.rating);
 
+        //product stock availability status
+        const { stockStatusClass, stockText } = getStockStatus(product.stock);
+        const isOutOfStock = (stockStatusClass === 'out-of-stock');
+
+        const addToCartDisabled = isOutOfStock ? 'disabled' : '';
+
+        if (isOutOfStock) {
+            productCard.classList.add('product-out-of-stock');
+        }
+
         productCard.innerHTML = `
+            <div class="stock-status ${stockStatusClass}">${stockText}</div>
             <img src="${product.thumbnail}" alt="${product.title}" class="product-thumbnail"/>
             <div class="product-content">
                 <h2 class="product-title">
@@ -160,11 +182,10 @@ function displayProducts(products) {
                     Price: $${product.price}
                 </p>
                 <div class="product-status">
-                    <span class="stock-status">${product.availabilityStatus}</span>
                     <span class="rating">${starsHTML} (${product.rating})</span>
                 </div>
                 <div class="product-actions">
-                    <button class="product-add-to-cart-btn">Add to Cart</button>
+                    <button class="product-add-to-cart-btn" ${addToCartDisabled}>Add to Cart</button>
                     <button class="product-view-details-btn">View Details</button>
                 </div>
             </div>
@@ -199,7 +220,15 @@ function showProductDetails(productId) {
 
             const isNotBrand = (product.brand === undefined);
 
+            const { stockStatusClass, stockText } = getStockStatus(product.stock);
+            const isOutOfStock = (stockStatusClass === 'out-of-stock');
+            const addToCartDisabled = isOutOfStock ? 'disabled' : '';
+
             const modalBody = document.querySelector('.modal-body');
+
+            if (isOutOfStock) {
+                modalBody.classList.add('product-out-of-stock');
+            }
 
             modalBody.innerHTML = `
                 <div class="modal-product-details">
@@ -238,7 +267,7 @@ function showProductDetails(productId) {
                             <p>Weight: ${product.weight}kg</p>
                         </div>
                         
-                        <button class="product-add-to-cart-btn">Add to Cart</button>
+                        <button class="product-add-to-cart-btn" ${addToCartDisabled}>Add to Cart</button>
                     </div>
                 </div>
             `;

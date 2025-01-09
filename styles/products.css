@@ -50,6 +50,7 @@
 }
 
 .product-card {
+    position: relative;
     display: flex;
     flex-direction: column;
     border-radius: var(--card-radius);
@@ -86,6 +87,38 @@
     text-overflow: ellipsis;
 }
 
+.product-price {
+    font-size: 1.1rem;
+    color: #28a745;
+    margin: 8px 0;
+}
+
+.stock-status {
+    position: absolute;
+    font-size: 1rem;
+    margin: 8px 0;
+    padding: 4px 8px;
+    border-radius: 4px;
+    top: 0;
+    right: 10px;
+    z-index: 10;
+}
+
+.stock-status.in-stock {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.stock-status.low-stock {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.stock-status.out-of-stock {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
 .product-card .product-actions {
     display: flex;
     gap: 10px;
@@ -96,20 +129,40 @@
 .product-view-details-btn {
     background-color: rgb(0, 28, 212);
     color: white;
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 400;
     padding: 10px 15px;
-    border: 1px solid rgb(0, 28, 212);
+    border: none;
     border-radius: 20px;
     cursor: pointer;
     margin-top: 10px;
     transition: all 0.2s ease;
 }
 
+.product-add-to-cart-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.product-add-to-cart-btn:disabled:hover {
+    background-color: #ccc;
+    color: white;
+    border: none
+}
+
 .product-add-to-cart-btn:hover,
 .product-view-details-btn:hover {
+    border: 1px solid rgb(0, 28, 212);
     background-color: transparent;
     color: rgb(0, 28, 212);
+}
+
+.product-card.product-out-of-stock img {
+    opacity: 0.4;
+}
+
+.product-card.product-out-of-stock .product-content {
+    opacity: 0.4;
 }
 
 
@@ -194,6 +247,7 @@
 }
 
 .modal-body {
+    position: relative;
     height: calc(100% - 70px);
     padding: 10px;
     margin-top: 10px;
@@ -293,6 +347,22 @@
     margin: 5px 0;
 }
 
+.modal-body.product-out-of-stock {
+    opacity: 0.4;
+}
+
+/* out of stock */
+.product-out-of-stock::after {
+    content: 'Out Of Stock';
+    position: absolute;
+    top: 45%;
+    rotate: z -45deg;
+    color: #a8a7a7;
+    text-align: center;
+    font-size: 3.5em;
+    z-index: 1000;
+}
+
 /* load more button */
 .load-more-div {
     display: flex;
@@ -306,14 +376,14 @@
     cursor: pointer;
     border: none;
     background-color: transparent;
-    font-size: 1.2rem;
-    padding: 10px 20px;
+    font-size: 1rem;
+    padding: 10px 12px;
     box-shadow: 0 2px 2px 2px rgb(180, 180, 180);
-    transition: all 0.2s ease-in-out;
+    transition: all 0.3s ease;
 }
 
 #load-btn:hover {
-    transform: scale(1.1);
+    transform: translateY(-5px);
 }
 
 @media screen and (max-width: 768px) {
