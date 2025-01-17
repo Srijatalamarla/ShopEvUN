@@ -16,27 +16,26 @@
     justify-content: center;
     align-items: center;
     gap: 15px;
-    height: 50px;
     padding: 10px 20px;
     margin: 10px 0;
 }
 
-#prod-category-filter {
-    padding: 10px 15px;
+.filter {
+    padding: 2px;
     font-size: 1rem;
     border: 2px solid #ccc;
-    border-radius: 15px;
+    border-radius: 1px;
     cursor: pointer;
-    transition: all 0.3s ease-in-out;
+    transition: all 0.2s ease-in-out;
 }
 
-#prod-category-filter:hover,
-#prod-category-filter:focus {
+.filterr:hover,
+.filter:focus {
     border: 2px solid black;
     outline: none;
 }
 
-#prod-category-filter option {
+.filter option {
     padding: 10px;
 }
 
@@ -222,7 +221,8 @@
     padding: 16px 20px;
     height: 60px;
     width: 100%;
-    border-radius: 12px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
     justify-content: space-between;
     align-items: center;
     background-color: rgb(245, 245, 245);
@@ -250,7 +250,7 @@
     position: relative;
     height: calc(100% - 70px);
     padding: 10px;
-    margin-top: 10px;
+    margin-top: 3px;
     overflow-y: scroll;
 }
 
@@ -275,6 +275,7 @@
 .product-gallery {
     flex: 1;
     max-width: 40%;
+    height: 100%;
 
     display: flex;
     justify-content: center;
@@ -390,10 +391,6 @@
     .product-container {
         padding: 0;
         grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-    }
-
-    .product-filter-section {
-        height: 80px;
     }
 
     .modal-product-details {

@@ -18,7 +18,6 @@ function toggleMenu() {
         menuBtn.classList.remove("deactivate");
         navLink.forEach((link) => {
             link.classList.remove("active");
-            console.log(link.classList);
         });
         navBar.classList.remove("active");
     }
@@ -41,7 +40,18 @@ const featuredProductsContainer = document.querySelector('.featured-products-con
 const noProductDiv = document.querySelector('.no-products-available');
 const loadBtn = document.querySelector('#load-btn');
 
-document.addEventListener('DOMContentLoaded', () => {
+let products = [];
+
+//fetch products from API
+const fetchProducts = async () => {
+    const response = await fetch('https://dummyjson.com/products?limit=0');
+    const data = await response.json();
+    products = data.products;
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+
+    await fetchProducts();
 
     //if on products.html page
     if (productContainer) {
@@ -119,25 +129,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 
+
 // display products on products.html
 
 let skip = 0;
 const limit = 20;
 
 function loadProducts() {
-    fetch(`https://dummyjson.com/products?limit=${limit}&skip=${skip}`)
-        .then(res => res.json())
-        .then(data => {
-            // console.log(data.products.length);
-            if (data.products.length == 0) {
-                //no more products
-                window.alert("no more products avaailable");
-            }
-            noProductDiv.style.display = 'none';
-            loadBtn.style.display = 'block';
-            displayProducts(data.products);
-            skip += limit;
-        });
+    if (products.length <= skip) {
+        //display remaining products
+        displayProducts(products.slice(skip, products.length));
+        //no more products
+        window.alert("no more products avaailable");
+        return;
+    }
+    const currProducts = products.slice(skip, skip + limit);
+    noProductDiv.style.display = 'none';
+    loadBtn.style.display = 'block';
+    displayProducts(currProducts);
+    skip += limit;
 }
 
 function getStockStatus(stock) {
@@ -154,7 +164,6 @@ function getStockStatus(stock) {
 function displayProducts(products) {
 
     products.forEach(product => {
-        // console.log(product);
         const productCard = document.createElement('div');
 
         productCard.classList.add('product-card');
@@ -212,25 +221,23 @@ function displayProducts(products) {
 }
 
 function showProductDetails(productId) {
-    fetch(`https://dummyjson.com/products/${productId}`)
-        .then(res => res.json())
-        .then(product => {
+    const product = products.find((product) => product.id === productId);
 
-            const starsHTML = generateRatingStars(product.rating);
+    const starsHTML = generateRatingStars(product.rating);
 
-            const isNotBrand = (product.brand === undefined);
+    const isNotBrand = (product.brand === undefined);
 
-            const { stockStatusClass, stockText } = getStockStatus(product.stock);
-            const isOutOfStock = (stockStatusClass === 'out-of-stock');
-            const addToCartDisabled = isOutOfStock ? 'disabled' : '';
+    const { stockStatusClass, stockText } = getStockStatus(product.stock);
+    const isOutOfStock = (stockStatusClass === 'out-of-stock');
+    const addToCartDisabled = isOutOfStock ? 'disabled' : '';
 
-            const modalBody = document.querySelector('.modal-body');
+    const modalBody = document.querySelector('.modal-body');
 
-            if (isOutOfStock) {
-                modalBody.classList.add('product-out-of-stock');
-            }
+    if (isOutOfStock) {
+        modalBody.classList.add('product-out-of-stock');
+    }
 
-            modalBody.innerHTML = `
+    modalBody.innerHTML = `
                 <div class="modal-product-details">
                     <div class="product-gallery">
                         <img src="${product.images[0]}" alt="${product.title}" class="modal-product-image"/>
@@ -272,13 +279,12 @@ function showProductDetails(productId) {
                 </div>
             `;
 
-            const addToCartBtn = modalBody.querySelector('.product-add-to-cart-btn');
-            addToCartBtn.addEventListener('click', () => {
-                event.stopPropagation();
-                addToCart(product.id);
-            });
-            modal.style.display = 'block';
-        });
+    const addToCartBtn = modalBody.querySelector('.product-add-to-cart-btn');
+    addToCartBtn.addEventListener('click', () => {
+        event.stopPropagation();
+        addToCart(product.id);
+    });
+    modal.style.display = 'block';
 }
 
 //generate rating stars - visually 
@@ -344,16 +350,12 @@ function addToCart(productId) {
     const product = cart.find(p => p.id === Number(productId)); //check if product is already in the cart
 
     if (!product) {
-        fetch(`https://dummyjson.com/products/${productId}`)
-            .then(res => res.json())
-            .then(productData => {
-                cart.push(productData);
-                // console.log(cart);
-                saveCartToSession();
-                updateCartCount();
+        const productData = products.find((product) => product.id === productId);
+        cart.push(productData);
+        saveCartToSession();
+        updateCartCount();
 
-                alert(`${productData.title} has been added to your cart`);
-            });
+        alert(`${productData.title} has been added to your cart`);
     }
     else {
         alert("Product already in the cart");
@@ -361,9 +363,7 @@ function addToCart(productId) {
 }
 
 //remove from cart
-function removeFromCart(event) {
-    // console.log(event.target.closest('button').dataset.id);
-    const productId = event.target.closest('button').dataset.id;
+function removeFromCart(productId) {
 
     cart = cart.filter(item => item.id !== Number(productId));
 
@@ -388,7 +388,6 @@ function updateCartCount() {
 
 //update cart.html with cart items
 function updateCartUI() {
-    // console.log(cartContainer);
     cartContainer.innerHTML = ``;
     if (cart.length === 0) {
         cartContainer.innerHTML = `
@@ -425,7 +424,7 @@ function updateCartUI() {
                     <h2 class="cart-prod-title">${cartItem.title}</h2>
                     <p class="cart-prod-price">Price: $${cartItem.price}</p>
                 </div>      
-                <button onclick="removeFromCart(event)" class="cart-prod-remove-btn" data-id="${cartItem.id}">
+                <button onclick="removeFromCart(${cartItem.id})" class="cart-prod-remove-btn">
                     <i class="fa-solid fa-trash"></i>
                 </button>
             `;
@@ -484,13 +483,11 @@ function displayCategories(container) {
 //redirect to products.html and display products category wise when a category is clicked on home page - index.html
 
 function fetchProductsByCategory(category) {
-    fetch(`https://dummyjson.com/products/category/${category}`)
-        .then(res => res.json())
-        .then(data => {
-            noProductDiv.style.display = 'none';
-            loadBtn.style.display = 'block';
-            displayProducts(data.products);
-        });
+    const filteredProducts = products.filter(product => product.category === category);
+    noProductDiv.style.display = 'none';
+    loadBtn.style.display = 'block';
+    displayProducts(filteredProducts);
+
 }
 
 function getQueryParam(param) {
@@ -503,7 +500,6 @@ function populateCategoryFilterDropDown() {
     const categoryDropDown = document.getElementById('prod-category-filter');
 
     categoryDropDown.addEventListener('change', (event) => {
-        console.log(event);
         const selectedCategory = event.target.value;
         setTimeout(() => {
             if (selectedCategory === 'all') {
@@ -523,10 +519,6 @@ function populateCategoryFilterDropDown() {
             const allOption = document.createElement('option');
             allOption.value = 'all';
             allOption.textContent = 'All';
-            // allOption.addEventListener('click', () => {
-            //     window.location.href = `products.html`;
-            // });
-
 
             categoryDropDown.appendChild(allOption);
 
@@ -587,22 +579,17 @@ function stopAutoScroll() {
 
 //featured products
 function displayFeaturedProducts() {
-    fetch('https://dummyjson.com/products')
-        .then(res => res.json())
-        .then(data => {
+    noProductDiv.style.display = 'none';
 
-            noProductDiv.style.display = 'none';
+    const featuredProducts = products.filter(product => product.rating > 4.5).sort((a, b) => b.rating - a.rating).slice(0, 5);
 
-            const products = data.products;
-            const featuredProducts = products.filter(product => product.rating > 4.5);
+    featuredProducts.forEach(featuredProduct => {
 
-            featuredProducts.forEach(featuredProduct => {
+        const productCard = document.createElement('div');
 
-                const productCard = document.createElement('div');
+        productCard.classList.add('featured-product-card');
 
-                productCard.classList.add('featured-product-card');
-
-                productCard.innerHTML = `
+        productCard.innerHTML = `
                     <img src="${featuredProduct.thumbnail}" alt="${featuredProduct.title}" class="featured-product-thumbnail"/>
                     <div class="featured-product-content">
                         <h2 class="featured-product-title">
@@ -611,13 +598,12 @@ function displayFeaturedProducts() {
                     </div>
                 `;
 
-                productCard.addEventListener("click", () => {
-                    showProductDetails(featuredProduct.id);
-                });
-
-                featuredProductsContainer.appendChild(productCard);
-            });
+        productCard.addEventListener("click", () => {
+            showProductDetails(featuredProduct.id);
         });
+
+        featuredProductsContainer.appendChild(productCard);
+    });
 }
 
 document.getElementById('footer-queries-form').addEventListener('submit', (event) => {

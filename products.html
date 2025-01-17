@@ -57,13 +57,31 @@
     <main>
         <h1 class="product-page-title">Explore Products</h1>
         <div class="product-filter-section">
-            <h2>Filter By Category</h2>
+            <h2>Filters</h2>
             <div class="prod-category-filter">
-                <label for="prod-category-filter"></label>
-                <select name="prod-category-filter" id="prod-category-filter">
+                <label for="prod-category-filter">Category</label>
+                <select name="prod-category-filter" id="prod-category-filter" class="prod-category-filter filter">
                     <option value="">Select a category</option>
                 </select>
             </div>
+            <div class="prod-sort-filter">
+                <label for="prod-sort-filter">Sort By</label>
+                <select name="prod-sort-filter" id="prod-sort-filter" class="prod-sort-filter filter">
+                    <option value="">None</option>
+                    <option value="title">Title</option>
+                    <option value="price">Price</option>
+                    <option value="rating">Rating</option>
+                </select>
+            </div>
+            <div>
+                <label for="prod-order-filter">Order</label>
+                <select name="prod-order-filter" id="prod-order-filter" class="prod-order-filter filter">
+                    <option value="asc">Ascending</option>
+                    <option value="desc">Descending</option>
+                </select>
+            </div>
+
+            <button id="applyFilters">Apply</button>
         </div>
         <div class="no-products-available">
             <img src="assets/images/no-products-available.jpg" alt="no-products-available">
