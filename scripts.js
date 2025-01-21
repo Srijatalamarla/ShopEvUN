@@ -39,6 +39,7 @@ const closeModalBtn = document.querySelector('.close-modal');
 const featuredProductsContainer = document.querySelector('.featured-products-container');
 const noProductDiv = document.querySelector('.no-products-available');
 const loadBtn = document.querySelector('#load-btn');
+const applyFiltersBtn = document.querySelector('#applyFilters');
 
 let products = [];
 
@@ -66,6 +67,29 @@ document.addEventListener('DOMContentLoaded', async () => {
             loadProducts(); //loads all products
         }
 
+        const filterIcon = document.querySelector('#filter-icon');
+
+        filterIcon.addEventListener("click", () => {
+            if (window.innerWidth > 768) {
+                filterIcon.classList.add('disable');
+            }
+            //on smaller screens
+            else {
+                if (filterIcon.classList.contains('disable')) {
+                    filterIcon.classList.remove('disable');
+                }
+                document.querySelector('.filters').classList.toggle('active');
+            }
+        });
+
+        applyFiltersBtn.addEventListener("click", (event) => {
+            event.preventDefault();
+            const filterCategoryValue = document.querySelector('#prod-category-filter').value;
+            const filterSortByValue = document.querySelector('#prod-sort-filter').value;
+            const filterOrderValue = document.querySelector('#prod-order-filter').value;
+
+            filterProducts(filterCategoryValue, filterSortByValue, filterOrderValue);
+        });
         loadBtn.addEventListener("click", loadProducts);
 
     }
@@ -499,17 +523,17 @@ function getQueryParam(param) {
 function populateCategoryFilterDropDown() {
     const categoryDropDown = document.getElementById('prod-category-filter');
 
-    categoryDropDown.addEventListener('change', (event) => {
-        const selectedCategory = event.target.value;
-        setTimeout(() => {
-            if (selectedCategory === 'all') {
-                window.location.href = `products.html`;
-            }
-            else {
-                window.location.href = `products.html?category=${selectedCategory}`;
-            }
-        }, 500);
-    });
+    // categoryDropDown.addEventListener('change', (event) => {
+    //     const selectedCategory = event.target.value;
+    //     setTimeout(() => {
+    //         if (selectedCategory === 'all') {
+    //             window.location.href = `products.html`;
+    //         }
+    //         else {
+    //             window.location.href = `products.html?category=${selectedCategory}`;
+    //         }
+    //     }, 500);
+    // });
 
     fetch('https://dummyjson.com/products/category-list')
         .then(res => res.json())
@@ -604,6 +628,36 @@ function displayFeaturedProducts() {
 
         featuredProductsContainer.appendChild(productCard);
     });
+}
+
+function filterProducts(category = "", sortBy = "", order = "") {
+    if (category === "" && sortBy === "" && order === "")
+        return;
+
+    // Clear existing products
+    const modalHTML = modal;
+    productContainer.innerHTML = '';
+    productContainer.appendChild(modalHTML);
+    loadBtn.style.display = 'none';
+
+    let currProducts = [...products];
+
+    if (category !== "all" && category !== "") {
+        currProducts = currProducts.filter(product => product.category === category);
+    }
+    if (sortBy != "") {
+        currProducts = currProducts.sort((a, b) => {
+            if (order === "desc")
+                return b[sortBy] - a[sortBy];
+            else
+                return a[sortBy] - b[sortBy];
+        });
+    }
+    if (sortBy === "" && order != "") {
+        alert("Select sort by value");
+        return;
+    }
+    displayProducts(currProducts);
 }
 
 document.getElementById('footer-queries-form').addEventListener('submit', (event) => {

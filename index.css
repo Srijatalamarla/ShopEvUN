@@ -538,7 +538,7 @@ footer {
     }
 
     .nav-link:hover {
-        transform: translateX(10px);
+        transform: translateX(5px);
     }
 
     .cart:hover {
