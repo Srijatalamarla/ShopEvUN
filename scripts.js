@@ -40,6 +40,7 @@ const featuredProductsContainer = document.querySelector('.featured-products-con
 const noProductDiv = document.querySelector('.no-products-available');
 const loadBtn = document.querySelector('#load-btn');
 const applyFiltersBtn = document.querySelector('#applyFilters');
+const searchBtn = document.querySelector('#search-icon');
 
 let products = [];
 
@@ -60,10 +61,25 @@ document.addEventListener('DOMContentLoaded', async () => {
         populateCategoryFilterDropDown();
 
         const category = getQueryParam('category');
+        const searchProductTitle = getQueryParam('search');
 
         if (category) {
             fetchProductsByCategory(category);
-        } else {
+        }
+        else if (searchProductTitle) {
+            const searchedProduct = products.filter((product) => product.title.toLowerCase() === searchProductTitle);
+            if (searchedProduct) {
+                // Clear existing products
+                const modalHTML = modal;
+                productContainer.innerHTML = '';
+                productContainer.appendChild(modalHTML);
+                noProductDiv.style.display = 'none';
+                loadBtn.style.display = 'none';
+
+                displayProducts(searchedProduct);
+            }
+        }
+        else {
             loadProducts(); //loads all products
         }
 
@@ -90,6 +106,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             filterProducts(filterCategoryValue, filterSortByValue, filterOrderValue);
         });
+
         loadBtn.addEventListener("click", loadProducts);
 
     }
@@ -146,6 +163,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
 
         window.onclick = (event) => {
+            const matchedProductsList = document.querySelector('.match-prod-list');
+            // console.log(matchedProductsList.childNodes.length);
+            if (matchedProductsList.childNodes.length > 0) {
+                matchedProductsList.innerHTML = ``;
+
+                const searchInput = document.querySelector('#search-space');
+                searchInput.value = ``;
+            }
             if (event.target === modal)
                 modal.style.display = 'none';
         }
@@ -658,6 +683,52 @@ function filterProducts(category = "", sortBy = "", order = "") {
         return;
     }
     displayProducts(currProducts);
+}
+
+function search(event) {
+    // console.log(event);
+    let matchedProducts;
+    let input = document.querySelector('#search-space').value;
+    if (input.length < 3) {
+        //clear list
+        const searchMatchProdListElement = document.querySelector('.match-prod-list');
+        searchMatchProdListElement.innerHTML = ``;
+
+        return;
+    }
+    input = input.toLowerCase();
+
+    matchedProducts = products.filter((product) => product.title.toLowerCase().includes(input));
+    if (event.key == 'Enter' || event.type === 'click') {
+        // console.log("Display");
+        // Clear existing products
+        const modalHTML = modal;
+        productContainer.innerHTML = '';
+        productContainer.appendChild(modalHTML);
+        loadBtn.style.display = 'none';
+
+        displayProducts(matchedProducts);
+
+        //clear list
+        const searchMatchProdListElement = document.querySelector('.match-prod-list');
+        searchMatchProdListElement.innerHTML = ``;
+
+        return;
+    }
+    populateSearchMatchedProducts(matchedProducts);
+}
+
+function populateSearchMatchedProducts(products) {
+    const searchMatchProdListElement = document.querySelector('.match-prod-list');
+    searchMatchProdListElement.innerHTML = ``;
+
+    products.forEach((product) => {
+        const matchedItem = document.createElement('li');
+        matchedItem.classList.add('match-prod-list-item');
+        matchedItem.innerHTML = `<a href="products.html?search=${product.title.toLowerCase()}">${product.title}</a>`;
+
+        searchMatchProdListElement.appendChild(matchedItem);
+    });
 }
 
 document.getElementById('footer-queries-form').addEventListener('submit', (event) => {

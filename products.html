@@ -58,6 +58,21 @@
         <h1 class="product-page-title">Explore Products</h1>
         <div class="product-top-container">
             <div class="product-filter-section">
+                <div class="search-container" id="search-container">
+                    <div class="search-bar" id="search-bar">
+                        <input type="text" placeholder="Search products..." class="search-space" id="search-space" onkeydown="search(event)"/>
+                        <button class="search-icon" id="search-icon" onclick="search(event)">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </div>
+                    <div class="search-matched-prod-list" id="search-matched-prod-list">
+                        <ul class="match-prod-list">
+                            <!-- <li class="match-prod-list-item">
+                                none
+                            </li> -->
+                        </ul>
+                    </div>
+                </div>
                 <div class="filter-icon" id="filter-icon">
                     <img src="assets/images/filter.png" alt="filter products" class="filter-icon-img">
                     <h2 class="filter-icon-text">Filters</h2>
