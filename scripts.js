@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         window.onclick = (event) => {
             const matchedProductsList = document.querySelector('.match-prod-list');
             // console.log(matchedProductsList.childNodes.length);
-            if (matchedProductsList.childNodes.length > 0) {
+            if (matchedProductsList !== null && matchedProductsList.childNodes.length > 0) {
                 matchedProductsList.innerHTML = ``;
 
                 const searchInput = document.querySelector('#search-space');
@@ -506,6 +506,10 @@ function displayCategories(container) {
             categoriesData.forEach(category => {
                 const categoryItem = document.createElement('div');
                 categoryItem.classList.add('category-item');
+
+                const sampleImageURL = products.find((product) => product.category === category).thumbnail;
+
+                categoryItem.style.backgroundImage = `url(${sampleImageURL})`;
 
                 categoryItem.innerHTML = `
                     <span>${category.charAt(0).toUpperCase() + category.slice(1)}</span>

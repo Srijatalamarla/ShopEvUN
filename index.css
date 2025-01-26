@@ -229,6 +229,12 @@ main {
     cursor: pointer;
 }
 
+@media (max-width: 768px) {
+    .featured-product-card {
+        max-width: 300px;
+    }
+}
+
 .featured-product-thumbnail {
     height: 90%;
     width: 100%;
@@ -246,7 +252,7 @@ main {
 .categories {
     display: none;
     padding: 50px;
-    background-image: linear-gradient(to bottom, rgb(0, 10, 69), rgb(0, 24, 163));
+    /* background-image: linear-gradient(to bottom, rgb(0, 10, 69), rgb(0, 24, 163)); */
 }
 
 .categories-top-container {
@@ -258,9 +264,9 @@ main {
 }
 
 .scroll-btn {
-    background-color: rgba(255, 255, 255, 0.2);
+    /* background-color: rgba(255, 255, 255, 1); */
     padding: 5px;
-    color: white;
+    color: black;
     position: absolute;
     border: none;
     font-size: 1.5rem;
@@ -273,7 +279,7 @@ main {
 }
 
 .scroll-btn:hover {
-    background-color: rgba(255, 255, 255, 0.7);
+    /* background-color: rgba(255, 255, 255, 0.7); */
 }
 
 .scroll-btn:disabled {
@@ -293,7 +299,7 @@ main {
     text-align: center;
     margin-top: 10px;
     margin-bottom: 10px;
-    background-color: rgb(240, 240, 240);
+    background-color: rgb(208, 208, 208);
     width: 80%;
     padding: 10px;
     margin-left: auto;
@@ -305,7 +311,7 @@ main {
     display: flex;
     overflow-x: scroll;
     scroll-behavior: smooth;
-    gap: 10px;
+    gap: 2rem;
     padding: 2rem;
     z-index: 1;
 }
@@ -321,11 +327,11 @@ main {
 }
 
 .categories-container::-webkit-scrollbar-thumb:hover {
-    background: #eee;
+    background: #c9c9c9;
 }
 
 .categories-container::-webkit-scrollbar-track {
-    background: rgb(0, 10, 69);
+    background: transparent;
     border-radius: 10px;
 }
 
@@ -333,40 +339,47 @@ main {
     cursor: pointer;
     width: 200px;
     height: 200px;
-    font-size: 1.2rem;
-    padding: 15px;
-    font-weight: 600;
+    font-size: 1.5rem;
+    font-weight: 700;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-end;
     text-align: center;
-    /* ensures item doesn't shrink */
     flex: 0 0 auto;
-    background-color: rgb(159, 159, 159, 0.05);
-    color: rgb(225, 225, 225);
+    background-color: rgb(198 198 198 / 80%);
+    color: black;
     border-radius: 10px;
     letter-spacing: 1px;
     transform: scale(0.8);
     transition: all 0.2s ease-in-out;
+    background-position: center;
+    background-size: contain;
+    background-blend-mode: overlay;
+}
+
+.category-item span {
+    width: 100%;
+    background-color: rgb(240, 248, 255, 0.5);
+    padding: 5px 0;
+    z-index: 5;
+    backdrop-filter: blur(5px);
 }
 
 @media (max-width: 768px) {
     .category-item {
-        font-size: 1rem;
-        height: 150px;
-        width: 150px;
+        font-size: 1.3rem;
     }
 }
 
 .category-item.active {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgb(159, 159, 159, 0.2);
     transform: scale(1);
     transition: all 0.3s ease;
 }
 
 .category-item.active:hover {
     transform: scale(1.05);
-    background-color: rgb(159, 159, 159, 0.3);
+    background-color: rgb(159, 159, 159, 0.1);
 }
 
 .categories-buttons {
@@ -378,18 +391,19 @@ main {
 
 .categories-nav-products {
     text-decoration: none;
-    padding: 20px 30px;
-    border-radius: 30px;
+    padding: 10px 20px;
+    border-radius: 10px;
     background-color: rgb(0, 34, 255);
     color: white;
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 700;
     margin: 20px 0;
     transition: all 0.3s ease;
 }
 
 .categories-nav-products:hover {
-    border: 1px solid white;
+    color: rgb(0, 34, 255);
+    border: 1px solid rgb(0, 34, 255);
     background-color: transparent;
 }
 
